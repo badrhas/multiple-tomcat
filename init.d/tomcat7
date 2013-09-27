@@ -10,14 +10,14 @@
 # Additional improvements by Jason Brittain <jason.brittain@mulesoft.com>.
 #
 ### BEGIN INIT INFO
-# Provides:          tomcat7-@HOST_NAME@
+# Provides:          tomcat7-$INSTANCE_NAME
 # Required-Start:    $local_fs $remote_fs $network
 # Required-Stop:     $local_fs $remote_fs $network
 # Should-Start:      $named
 # Should-Stop:       $named
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start Tomcat (@HOST_NAME@).
+# Short-Description: Start Tomcat ($INSTANCE_NAME).
 # Description:       Start the Tomcat servlet engine.
 ### END INIT INFO
 
@@ -25,9 +25,10 @@ set -e
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 NAME=tomcat7
-DESC="Tomcat servlet engine (@HOST_NAME@)"
-DEFAULT=/etc/default/$NAME/@HOST_NAME@
-JVM_TMP=/tmp/$NAME-@HOST_NAME@-tmp
+INSTANCE_NAME=@HOST_NAME@
+DESC="Tomcat servlet engine ($INSTANCE_NAME)"
+DEFAULT=/etc/default/$NAME/$INSTANCE_NAME
+JVM_TMP=/tmp/$NAME-$INSTANCE_NAME-tmp
 
 if [ `id -u` -ne 0 ]; then
 	echo "You need root privileges to run this script"
@@ -92,7 +93,7 @@ export JAVA_HOME
 CATALINA_HOME=/usr/share/$NAME
 
 # Directory for per-instance configuration files and webapps
-CATALINA_BASE=/var/lib/$NAME
+CATALINA_BASE=/var/lib/$NAME/instances/$INSTANCE_NAME
 
 # Use the Java security manager? (yes/no)
 TOMCAT7_SECURITY=no
